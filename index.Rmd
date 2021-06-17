@@ -11,10 +11,14 @@ library(flexdashboard)
 library(tidyverse)
 library(hrbrthemes)
 library(ggthemes)
+library(plotly)
+library(calendR)
+library(RColorBrewer)
 ```
 
 ```{r data, include=FALSE}
 fit = read_csv("Fit Test.csv")
+cal = read_csv("Calendar.csv")
 ```
 
 Fit Test
@@ -26,7 +30,7 @@ Column {data-width=500}
 ### Fit Test Results
 
 ```{r}
-fit %>% 
+fit_test = fit %>% 
   pivot_longer(cols = c(2:8), names_to = "Exercise", values_to = "Reps") %>% 
   ggplot(aes(y = Reps, x = `Test Number`, color = Exercise))+
   geom_line()+
@@ -37,6 +41,8 @@ fit %>%
   theme_classic()+
   theme(legend.position = "NULL",
         plot.title = element_text(hjust = 0.5))
+  
+ggplotly(fit_test)
 ```
 
 Column {data-width=500}
@@ -45,17 +51,39 @@ Column {data-width=500}
 ### Weight
 
 ```{r}
-fit %>% ggplot(aes(x = `Test Number`, y = Weight))+
+weight = fit %>% ggplot(aes(x = `Test Number`, y = Weight))+
   geom_line()+
   scale_x_continuous(breaks = seq(from = 1, to = max(fit$`Test Number`), by = 1))+
   theme_classic()+
   labs(title = "Weight over time")+
   theme(plot.title = element_text(hjust = 0.5))
-```
 
+ggplotly(weight)
+```
 
 Data {data-width=1000, .tabset}
 ======================================================================
 ```{r}
 DT::datatable(fit)
+```
+
+Calendar {data-width=1000, .tabset}
+======================================================================
+
+```{r, out.width="100%"}
+pal = RColorBrewer::brewer.pal(5, name = "Spectral")
+
+cale = calendR(year = 2021, month = 6,
+        special.days = cal$Event,
+        special.col = c(pal), # as events
+        low.col = "white",
+        legend.pos = "bottom", # Legend position
+        legend.title = "",
+        day.size = 3,
+        text.size = 3,
+        weeknames.size = 4)     # Legend title
+
+ggplotly(cale) %>% layout(legend = list(orientation = "h",   # show entries horizontally
+                     xanchor = "center",  # use center of legend as anchor
+                     x = 0.5, y = 0))             # put legend in center of x-axis
 ```
