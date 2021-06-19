@@ -2,6 +2,9 @@
 title: "Insanity"
 output: 
   flexdashboard::flex_dashboard:
+    theme: 
+      version: 4
+      bootswatch: cerulean
     orientation: columns
     vertical_layout: fill
 ---
@@ -16,9 +19,14 @@ library(calendR)
 library(RColorBrewer)
 ```
 
+
 ```{r data, include=FALSE}
 fit = read_csv("Fit Test.csv")
 cal = read_csv("Calendar.csv")
+```
+
+```{r setup, include = FALSE}
+thematic::thematic_rmd(font = "auto")
 ```
 
 Fit Test
