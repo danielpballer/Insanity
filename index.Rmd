@@ -81,6 +81,10 @@ Calendar {data-width=1000, .tabset}
 ```{r, out.width="100%"}
 pal = RColorBrewer::brewer.pal(5, name = "Spectral")
 
+secondary = c(cal$Secondary[which(is.na(cal$Secondary)==F)])
+  
+days = c(cal$Day[which(is.na(cal$Secondary)==F)])
+
 cale = calendR(year = 2021, month = 6,
         special.days = cal$Event,
         special.col = c(pal), # as events
@@ -89,6 +93,8 @@ cale = calendR(year = 2021, month = 6,
         legend.title = "",
         day.size = 3,
         text.size = 3,
+        text = secondary,
+        text.pos = days,
         weeknames.size = 4)     # Legend title
 
 ggplotly(cale) %>% layout(legend = list(orientation = "h",   # show entries horizontally
