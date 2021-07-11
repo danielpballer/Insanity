@@ -78,16 +78,63 @@ DT::datatable(fit)
 Calendar {data-width=1000, .tabset}
 ======================================================================
 
+Row {.tabset}
+----------------------------------------------------------------------
+### July 2021
 ```{r, out.width="100%"}
-pal = RColorBrewer::brewer.pal(5, name = "Spectral")
 
-secondary = c(cal$Secondary[which(is.na(cal$Secondary)==F)])
+uniq_event_jul = cal %>% 
+  filter(Month=="July") %>% 
+  select(Event) %>% 
+  filter(!is.na(Event)==T) %>% 
+  unique() %>% 
+  pull() %>% 
+  length()
+
+pal_july = RColorBrewer::brewer.pal(uniq_event_jul, name = "Spectral")
+
+secondary = c(cal$Secondary[which(is.na(cal$Secondary)==F & cal$Month == "July")])
   
-days = c(cal$Day[which(is.na(cal$Secondary)==F)])
+days = c(cal$Day[which(is.na(cal$Secondary)==F & cal$Month == "July")])
+
+cale = calendR(year = 2021, month = 7,
+        special.days = cal$Event[which(cal$Month=="July")],
+        special.col = c(pal_july[1:uniq_event_jul]), # as events
+        low.col = "white",
+        legend.pos = "bottom", # Legend position
+        legend.title = "",
+        day.size = 3,
+        text.size = 3,
+        text = secondary,
+        text.pos = days,
+        weeknames.size = 4)     # Legend title
+
+ggplotly(cale) %>% layout(legend = list(orientation = "h",   # show entries horizontally
+                     xanchor = "center",  # use center of legend as anchor
+                     x = 0.5, y = 0))             # put legend in center of x-axis
+```
+
+
+### June 2021 
+```{r, out.width="100%"}
+
+uniq_event_jun = cal %>% 
+  filter(Month=="June") %>% 
+  select(Event) %>% 
+  filter(!is.na(Event)==T) %>% 
+  unique() %>% 
+  pull() %>% 
+  length()
+
+pal_june = RColorBrewer::brewer.pal(uniq_event_jun, name = "Spectral")
+
+secondary = c(cal$Secondary[which(is.na(cal$Secondary)==F & cal$Month == "June")])
+  
+days = c(cal$Day[which(is.na(cal$Secondary)==F & cal$Month == "June")])
 
 cale = calendR(year = 2021, month = 6,
-        special.days = cal$Event,
-        special.col = c(pal), # as events
+        special.days = cal$Event[which(cal$Month=="June")],
+        special.col = c(pal_june[1:uniq_event_jun]), # as events
         low.col = "white",
         legend.pos = "bottom", # Legend position
         legend.title = "",
