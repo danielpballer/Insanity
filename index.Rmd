@@ -80,6 +80,43 @@ Calendar {data-width=1000, .tabset}
 
 Row {.tabset}
 ----------------------------------------------------------------------
+
+<!--
+### August 2021
+```{r eval=FALSE, include=FALSE, out.width="100%"}
+
+uniq_event_aug = cal %>% 
+  filter(Month=="August") %>% 
+  select(Event) %>% 
+  filter(!is.na(Event)==T) %>% 
+  unique() %>% 
+  pull() %>% 
+  length()
+
+pal_aug = RColorBrewer::brewer.pal(uniq_event_aug, name = "Spectral")
+
+secondary = c(cal$Secondary[which(is.na(cal$Secondary)==F & cal$Month == "August")])
+  
+days = c(cal$Day[which(is.na(cal$Secondary)==F & cal$Month == "August")])
+
+cale = calendR(year = 2021, month = 8,
+        special.days = cal$Event[which(cal$Month=="August")],
+        special.col = c(pal_aug[1:uniq_event_aug]), # as events
+        low.col = "white",
+        legend.pos = "bottom", # Legend position
+        legend.title = "",
+        day.size = 3,
+        text.size = 3,
+        text = secondary,
+        text.pos = days,
+        weeknames.size = 4)     # Legend title
+
+ggplotly(cale) %>% layout(legend = list(orientation = "h",   # show entries horizontally
+                     xanchor = "center",  # use center of legend as anchor
+                     x = 0.5, y = 0))             # put legend in center of x-axis
+```
+-->
+
 ### July 2021
 ```{r, out.width="100%"}
 
